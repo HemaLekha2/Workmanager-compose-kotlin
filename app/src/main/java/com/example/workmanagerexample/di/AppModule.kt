@@ -11,6 +11,8 @@ import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+import dagger.hilt.android.qualifiers.ApplicationContext // ✅ Add this
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -18,7 +20,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideQuoteDatabase(app: Context): QuoteDatabase =
+    fun provideQuoteDatabase(
+        @ApplicationContext app: Context // ✅ FIXED
+    ): QuoteDatabase =
         Room.databaseBuilder(app, QuoteDatabase::class.java, "quote_db").build()
 
     @Provides
@@ -27,7 +31,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl("https://686511545b5d8d03397f8e5f.mockapi.io/")
+        .baseUrl("https://686511545b5d8d03397f8e5e.mockapi.io/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

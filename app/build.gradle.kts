@@ -2,10 +2,12 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 
-    // STEP 2:
-    id("com.google.devtools.ksp") // 🔧 Kotlin Symbol Processing (KSP) Plugin
-    id("dagger.hilt.android.plugin") // 💉 Dagger Hilt Plugin for Dependency Injection
+//    // STEP 2:
+//    id("com.google.devtools.ksp") // 🔧 Kotlin Symbol Processing (KSP) Plugin
+//    id("dagger.hilt.android.plugin") // 💉 Dagger Hilt Plugin for Dependency Injection
 }
 
 android {
@@ -20,6 +22,18 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // ✅ Export Room schema
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += mapOf(
+                    "room.schemaLocation" to "$projectDir/schemas",
+                    "room.incremental" to "true",
+                    "room.expandProjection" to "true"
+                )
+            }
+        }
+
     }
 
     buildTypes {

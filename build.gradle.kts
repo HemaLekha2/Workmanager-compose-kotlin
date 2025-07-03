@@ -3,11 +3,13 @@ plugins {
     alias(libs.plugins.android.application) apply false // 📱 Android Application Plugin
     alias(libs.plugins.kotlin.android) apply false // 🟩 Kotlin Android Plugin
     alias(libs.plugins.kotlin.compose) apply false // 🎨 Kotlin Compose Plugin
+    alias(libs.plugins.ksp) apply false // ✅ Use alias, not id()
+    alias(libs.plugins.hilt) apply false
 
     // STEP 1:
     // 🔧 KSP (Kotlin Symbol Processing) plugin for annotation processing
-    id("com.google.devtools.ksp")
+//    id("com.google.devtools.ksp")
 
     // 💉 Dagger Hilt Plugin for Dependency Injection
-    id("com.google.dagger.hilt.android")  apply false
+//    id("com.google.dagger.hilt.android")  apply false
 }
