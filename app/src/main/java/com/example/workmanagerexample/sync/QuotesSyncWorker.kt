@@ -3,27 +3,30 @@ package com.example.workmanagerexample.sync
 
 import android.content.Context
 import android.util.Log
+import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.workmanagerexample.data.repository.QuoteRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 
-class QuotesSyncWorker(
-    context: Context,
-    workerParams: WorkerParameters,
+@HiltWorker
+class QuotesSyncWorker @AssistedInject constructor(
+    @Assisted appContext: Context,
+    @Assisted workerParams: WorkerParameters,
     private val repository: QuoteRepository
-) : CoroutineWorker(context, workerParams) {
+) : CoroutineWorker(appContext, workerParams) {
     override suspend fun doWork(): Result {
         Log.d("QuotesSyncWorker", "Worker manually triggered")
 
         return try {
             val quotes = repository.fetchFromApi()
-            if (!quotes.isNullOrEmpty()) {
+            if (quotes != null) {
                 repository.saveToRoom(quotes)
                 Log.d("QuotesSyncWorker", "Saved ${quotes.size} quotes to Room")
                 Result.success()
             } else {
-                Log.d("QuotesSyncWorker", "Empty result from API, retrying...")
-                Result.retry()
+                Result.retry() // Try again later
             }
         } catch (e: Exception) {
             Log.e("QuotesSyncWorker", "Failed syncing", e)

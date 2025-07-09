@@ -1,9 +1,8 @@
 package com.example.workmanagerexample
 
 import android.app.Application
-import android.util.Log
+import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import com.example.workmanagerexample.di.CustomWorkerFactory
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
@@ -11,11 +10,11 @@ import javax.inject.Inject
 class MyApp : Application(), Configuration.Provider {
 
     @Inject
-    lateinit var customWorkerFactory: CustomWorkerFactory
+    lateinit var workerFactory: HiltWorkerFactory
 
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
-            .setMinimumLoggingLevel(Log.DEBUG)
-            .setWorkerFactory(customWorkerFactory)
+            .setWorkerFactory(workerFactory)
             .build()
+
 }
