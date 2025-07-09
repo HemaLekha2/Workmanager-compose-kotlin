@@ -2,13 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    // STEP 2:
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kapt)
     alias(libs.plugins.hilt)
-
-//    // STEP 2:
-//    id("com.google.devtools.ksp") // 🔧 Kotlin Symbol Processing (KSP) Plugin
-//    id("dagger.hilt.android.plugin") // 💉 Dagger Hilt Plugin for Dependency Injection
 }
 
 android {
@@ -21,10 +17,8 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // ✅ Export Room schema
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments += mapOf(
@@ -34,7 +28,6 @@ android {
                 )
             }
         }
-
     }
 
     buildTypes {
@@ -46,20 +39,26 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
     buildFeatures {
         compose = true
+    }
+
+    kapt {
+        correctErrorTypes = true
     }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -68,8 +67,32 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    // WorkManager + Hilt
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.hilt.common)
+    implementation(libs.androidx.hilt.work)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.paging)
+
+    // Paging
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.paging.compose)
+
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -77,27 +100,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-    // STEP 3
-    // 💉 Hilt Dependency Injection
-    implementation(libs.hilt.android) // 🚀 Hilt core library
-    implementation(libs.androidx.hilt.navigation.compose) // 📦 Hilt Navigation for Compose
-    ksp(libs.hilt.compiler) // 🏗️ Hilt Compiler for code generation
-    // ✅ Room Database Setup (for local data storage)
-    ksp(libs.androidx.room.compiler) // ⚙️ Room Database compiler for annotation processing
-    implementation(libs.androidx.room.ktx) // 🔧 Room KTX extension for easier database handling
-    implementation(libs.androidx.room.runtime) // 🛠️ Room runtime for database access
-
-    // ✅ Add Room Paging Dependency (This fixes the error)
-    implementation(libs.androidx.room.paging) // 🔥 Fix missing room-paging issue
-    // ✅ Paging Library (Core)
-    implementation(libs.androidx.paging.runtime.ktx)
-    // ✅ Paging Support for Jetpack Compose
-    implementation(libs.androidx.paging.compose)
-
-    // Retrofit
-    implementation(libs.retrofit)
-// Retrofit with Gson converter
-    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
-
 }

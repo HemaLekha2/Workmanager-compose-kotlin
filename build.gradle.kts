@@ -8,4 +8,12 @@ plugins {
     alias(libs.plugins.ksp) apply false // ✅ Use alias, not id()
     // 💉 Dagger Hilt Plugin for Dependency Injection
     alias(libs.plugins.hilt) apply false
+    // 🛠️ Kotlin KAPT (Kotlin Annotation Processing Tool) for Room and Hilt
+    alias(libs.plugins.kapt) apply false // ✅ now kapt works via alias
+
+ //   id("com.google.dagger.hilt.android") apply false // 💉 Dagger Hilt Plugin for Dependency Injection
+//    id("com.google.devtools.ksp") apply false // 🔧 Kotlin Symbol Processing (KSP) Plugin
+
+ //   id("org.jetbrains.kotlin.kapt") apply false
+
 }

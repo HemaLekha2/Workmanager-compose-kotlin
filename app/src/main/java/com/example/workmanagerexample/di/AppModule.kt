@@ -2,8 +2,10 @@ package com.example.workmanagerexample.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.workmanagerexample.data.local.QuoteDao
 import com.example.workmanagerexample.data.local.QuoteDatabase
 import com.example.workmanagerexample.data.remote.QuoteApi
+import com.example.workmanagerexample.data.repository.QuoteRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,6 +26,15 @@ object AppModule {
         @ApplicationContext app: Context // ✅ FIXED
     ): QuoteDatabase =
         Room.databaseBuilder(app, QuoteDatabase::class.java, "quote_db").build()
+
+
+    @Provides
+    @Singleton
+    fun provideQuoteRepository(
+        api: QuoteApi,
+        dao: QuoteDao
+    ): QuoteRepository = QuoteRepository(api, dao)
+
 
     @Provides
     fun provideQuoteDao(db: QuoteDatabase) = db.quoteDao()
