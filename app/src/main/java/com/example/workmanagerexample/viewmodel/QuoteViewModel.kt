@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -69,7 +68,6 @@ class QuoteViewModel @Inject constructor(
                 }
         }
     }
-
 
     // This function is now primarily handled by WorkManager for background sync.
     // If a direct foreground sync is still desired, it can be kept, but consider its implications.
